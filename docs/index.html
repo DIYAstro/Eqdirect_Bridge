@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>EQDirect Bridge Web Flasher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #030712;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #818cf8;
+            --primary-glow: rgba(129, 140, 248, 0.4);
+            --accent: #c084fc;
+            --text: #f9fafb;
+            --text-muted: #9ca3af;
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 40%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 40px 36px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .version {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .warning {
+            background: var(--danger-bg);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 28px;
+            font-size: 13px;
+            color: #f87171;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .warning strong { color: var(--danger); }
+
+        esp-web-install-button {
+            --esp-tools-button-color: var(--primary);
+            --esp-tools-button-text-color: #030712;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 28px 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .info-row span:last-child { color: var(--text); font-weight: 600; }
+    </style>
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>EQDirect Bridge</h1>
+        <p class="version">Web Flasher</p>
+
+        <p class="description">
+            Connect the EQDirect Bridge via USB and click <strong style="color: var(--text);">Install</strong> to flash the latest firmware directly from your browser.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="info-row">
+            <span>Chip</span>
+            <span>ESP32</span>
+        </div>
+        <div class="info-row">
+            <span>Baud Rate</span>
+            <span>115200</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="warning">
+            <strong>Warning:</strong> Make sure only the EQDirect Bridge is connected via USB. Any ESP32 you select will be overwritten without further confirmation.
+            <br><br>
+            All existing settings (WiFi credentials, BT name, IP config) will be erased. After flashing, reconfigure via the Web UI.
+        </div>
+
+        <esp-web-install-button></esp-web-install-button>
+
+        <div id="status">Initializing...</div>
+    </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusEl = document.getElementById('status');
+            const installButton = document.querySelector("esp-web-install-button");
+
+            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+
+            const manifest = {
+                name: "EQDirect_Bridge",
+                builds: [
+                    {
+                        chipFamily: "ESP32",
+                        parts: [
+                            { path: `${baseUrl}firmware/bootloader.bin`,  offset: 0x1000   },
+                            { path: `${baseUrl}firmware/partitions.bin`,  offset: 0x8000   },
+                            { path: `${baseUrl}firmware/firmware.bin`,    offset: 0x10000  },
+                            { path: `${baseUrl}firmware/littlefs.bin`,    offset: 0x3D0000 },
+                        ],
+                    },
+                ],
+            };
+
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            installButton.manifest = URL.createObjectURL(manifestBlob);
+            installButton.setAttribute('erase-first', '');
+            installButton.setAttribute('flash-baud-rate', '115200');
+
+            statusEl.textContent = "Ready. Connect via USB and click Install.";
+        });
+    </script>
+</body>
+</html>

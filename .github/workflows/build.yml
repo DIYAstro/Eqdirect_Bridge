@@ -1,0 +1,62 @@
+name: Build & Release Firmware
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build firmware & filesystem
+        run: |
+          TAG="${{ github.ref_name }}"
+          sed -i "s/-D VERSION='\"dev\"'/-D VERSION='\"${TAG}\"'/" platformio.ini
+          pio run --environment esp32dev
+          pio run --target buildfs --environment esp32dev
+
+      - name: Copy firmware to docs/firmware
+        run: |
+          ls -la .pio/build/esp32dev/
+          mkdir -p docs/firmware
+          cp .pio/build/esp32dev/bootloader.bin  docs/firmware/bootloader.bin
+          cp .pio/build/esp32dev/partitions.bin  docs/firmware/partitions.bin
+          cp .pio/build/esp32dev/firmware.bin    docs/firmware/firmware.bin
+          cp .pio/build/esp32dev/littlefs.bin    docs/firmware/littlefs.bin
+
+      - name: Commit updated webflasher firmware
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/firmware/
+          git diff --cached --quiet || git commit -m "ci: update firmware for ${{ github.ref_name }} [skip ci]"
+          git push origin HEAD:main
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            .pio/build/esp32dev/bootloader.bin
+            .pio/build/esp32dev/partitions.bin
+            .pio/build/esp32dev/firmware.bin
+            .pio/build/esp32dev/littlefs.bin
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
