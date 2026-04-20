@@ -403,14 +403,21 @@ void setup() {
 // ---------------------------------------------------------------------------
 void loop() {
 
-  // Jumper change detection: auto-restart into new mode when switch is flipped
+  // Jumper change detection: pin must stay in new state for 3s before restart
   static unsigned long lastJumperCheck = 0;
-  if (millis() - lastJumperCheck > 1000) {
+  static unsigned long jumperChangedAt  = 0;
+  if (millis() - lastJumperCheck > 500) {
     lastJumperCheck = millis();
-    if ((digitalRead(JUMPER_PIN) == LOW) != btMode) {
-      Serial.println("Jumper changed — restarting in new mode...");
-      delay(500);
-      ESP.restart();
+    bool pinState = (digitalRead(JUMPER_PIN) == LOW);
+    if (pinState != btMode) {
+      if (jumperChangedAt == 0) jumperChangedAt = millis();
+      else if (millis() - jumperChangedAt >= 3000) {
+        if (!config.usb_bridge) Serial.println("Jumper changed — restarting in new mode...");
+        delay(200);
+        ESP.restart();
+      }
+    } else {
+      jumperChangedAt = 0;
     }
   }
 
