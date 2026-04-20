@@ -227,6 +227,11 @@ void handleCaptive() {
 // ---------------------------------------------------------------------------
 void startWiFi() {
   Serial.println("Initializing WiFi...");
+  udpDiscovery.stop();
+  udp11881.stop();
+  udp.stop();
+  tcpServer.stop();
+  server.stop();
 
   if (config.wifi_mode == "STA") {
     WiFi.mode(WIFI_STA);
@@ -489,6 +494,7 @@ void loop() {
       if (!config.usb_bridge) Serial.println("TCP Session Started.");
     }
     if (activeMode == MODE_WIFI_TCP && !tcpClient.connected()) {
+      tcpClient.stop();
       activeMode = MODE_NONE;
       if (!config.usb_bridge) Serial.println("TCP Session Ended.");
     }
