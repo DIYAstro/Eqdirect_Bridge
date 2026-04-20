@@ -497,16 +497,13 @@ void loop() {
     }
   }
 
-  // ---- Data forwarding: Client → Serial2 (both modes) ----
-  if (activeMode == MODE_WIFI_TCP && tcpClient.available()) {
+  // ---- Data forwarding: Client → Serial2 (USB has priority) ----
+  if (config.usb_bridge && !btMode && Serial.available()) {
+    while (Serial.available()) Serial2.write(Serial.read());
+  } else if (activeMode == MODE_WIFI_TCP && tcpClient.available()) {
     while (tcpClient.available()) Serial2.write(tcpClient.read());
   } else if (activeMode == MODE_BT && btSerial.available()) {
     while (btSerial.available()) Serial2.write(btSerial.read());
-  }
-
-  // USB bridge: PC → Mount (always active when enabled)
-  if (config.usb_bridge && !btMode) {
-    while (Serial.available()) Serial2.write(Serial.read());
   }
 
   // ---- Data forwarding: Serial2 → Client (both modes) ----
