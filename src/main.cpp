@@ -298,7 +298,7 @@ void handleUdpPacket(WiFiUDP &u) {
   int len = u.read(buf, 256);
   if (len == 0) return;
 
-  if (len == 1 && buf[0] == '1') {
+  if (!config.usb_bridge && len == 1 && buf[0] == '1') {
     IPAddress ip = WiFi.localIP();
     if (ip[0] == 0) ip = WiFi.softAPIP();
     uint8_t mac[6]; WiFi.macAddress(mac);
@@ -311,7 +311,7 @@ void handleUdpPacket(WiFiUDP &u) {
     return;
   }
 
-  if (buf[0] == ':') {
+  if (!config.usb_bridge && buf[0] == ':') {
     if (activeMode == MODE_NONE || activeMode == MODE_WIFI_UDP) {
       currentUdpSource = &u;
       activeMode       = MODE_WIFI_UDP;
@@ -468,7 +468,7 @@ void loop() {
 
     // Lantronix Discovery (30718)
     int discSize = udpDiscovery.parsePacket();
-    if (discSize > 0) {
+    if (discSize > 0 && !config.usb_bridge) {
       uint8_t buffer[16];
       int len = udpDiscovery.read(buffer, 16);
       if (len >= 4 && buffer[3] == 0xF6) {
@@ -484,19 +484,25 @@ void loop() {
     }
 
     // SynScan UDP
-    if (udp.parsePacket())      handleUdpPacket(udp);
-    if (udp11881.parsePacket()) handleUdpPacket(udp11881);
+    if (!config.usb_bridge) {
+      if (udp.parsePacket())      handleUdpPacket(udp);
+      if (udp11881.parsePacket()) handleUdpPacket(udp11881);
+    }
 
     // TCP
-    if (activeMode == MODE_NONE && tcpServer.hasClient()) {
+    if (!config.usb_bridge && activeMode == MODE_NONE && tcpServer.hasClient()) {
       tcpClient  = tcpServer.accept();
       activeMode = MODE_WIFI_TCP;
-      if (!config.usb_bridge) Serial.println("TCP Session Started.");
+      Serial.println("TCP Session Started.");
+    }
+    if (config.usb_bridge && activeMode == MODE_WIFI_TCP) {
+      tcpClient.stop();
+      activeMode = MODE_NONE;
     }
     if (activeMode == MODE_WIFI_TCP && !tcpClient.connected()) {
       tcpClient.stop();
       activeMode = MODE_NONE;
-      if (!config.usb_bridge) Serial.println("TCP Session Ended.");
+      Serial.println("TCP Session Ended.");
     }
     if (activeMode == MODE_WIFI_UDP && (millis() - lastUdpPacket > 5000)) {
       activeMode = MODE_NONE;
