@@ -434,7 +434,7 @@
                 },
                 usb: {
                     t: "USB Bridge (UART0)",
-                    p: "When enabled, the USB port acts as a direct serial connection to the mount — identical to a dedicated USB-TTL adapter.\n\nA PC connected via USB and another via WiFi can use the mount simultaneously. Commands from both channels are forwarded independently; avoid sending commands from both at the same time.\n\nNote: Debug output on the serial monitor is disabled in this mode, as UART0 is reserved for mount communication."
+                    p: "When enabled, the USB port acts as a direct serial connection to the mount — identical to a dedicated USB-TTL adapter.\n\nNote: WiFi bridge (TCP/UDP) and auto-discovery are disabled in this mode. Only this Web UI remains accessible via WiFi. Use either USB or WiFi bridge — not both simultaneously.\n\nDebug output on the serial monitor is also disabled, as UART0 is reserved for mount communication."
                 },
                 bt: {
                     t: "Bluetooth Bridge",
