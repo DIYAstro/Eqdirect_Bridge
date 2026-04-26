@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQBridge | Pro Wireless Interface</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>EQBridge | Wireless Interface</title>
     <style>
         :root {
             --primary: #818cf8;
@@ -18,11 +18,16 @@
             --success: #34d399;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
 
         body {
             background-color: var(--bg);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 40%);
             color: var(--text);
@@ -63,23 +68,89 @@
             gap: 4px;
         }
 
-        .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-        .stat-value { font-size: 13px; font-weight: 600; color: var(--text); }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .status-online { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
 
-        header { text-align: left; margin-bottom: 24px; position: relative; }
-        h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; background: linear-gradient(135deg, #fff 0%, #9ca3af 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+        .stat-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
 
-        section { margin-bottom: 32px; }
-        .section-title { font-size: 12px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; display: flex; align-items: center; }
-        .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); margin-left: 12px; }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-        
-        input, select {
+        .status-online {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin-left: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
@@ -91,7 +162,11 @@
             transition: all 0.3s ease;
         }
 
-        input:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 0 4px var(--primary-glow); }
+        input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
 
         .btn-primary {
             width: 100%;
@@ -107,88 +182,276 @@
             box-shadow: 0 10px 20px -5px var(--primary-glow);
         }
 
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -5px var(--primary-glow); filter: brightness(1.1); }
-        .btn-scan { background: transparent; border: 1px solid var(--border); padding: 0 16px; width: auto; font-size: 12px; margin-left: 8px; border-radius: 10px; cursor: pointer; transition: 0.2s; color: var(--text); }
-        .btn-scan:hover { background: rgba(255, 255, 255, 0.05); color: var(--primary); border-color: var(--primary); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px var(--primary-glow);
+            filter: brightness(1.1);
+        }
 
-        #scanResult { margin-top: 12px; background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 8px; font-size: 12px; border: 1px solid var(--border); }
-        .network-item { padding: 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s; }
-        .network-item:hover { background: rgba(255, 255, 255, 0.05); }
+        .btn-scan {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0 16px;
+            width: auto;
+            font-size: 12px;
+            margin-left: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--text);
+        }
+
+        .btn-scan:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        #scanResult {
+            margin-top: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            padding: 8px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .network-item {
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            transition: 0.2s;
+        }
+
+        .network-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
         .toast {
-            position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: var(--success); color: var(--bg); padding: 12px 24px; border-radius: 100px;
-            font-weight: 600; font-size: 14px; transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6); z-index: 1000;
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--success);
+            color: var(--bg);
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            z-index: 1000;
         }
-        .toast.show { transform: translateX(-50%) translateY(0); }
 
-        .loader { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite; vertical-align: middle; margin-right: 8px; display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* Modal Styles */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
-            display: none; align-items: center; justify-content: center; z-index: 2000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
             padding: 20px;
         }
+
         .modal-card {
-            background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 24px; padding: 28px; max-width: 400px;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 400px;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.9);
             animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--accent); }
-        .modal-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
-        .modal-footer { display: flex; gap: 12px; }
-        .btn-cancel { flex: 1; background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); padding: 12px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
-        .btn-cancel:hover { background: rgba(255,255,255,0.1); }
-        .btn-confirm { flex: 1; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-confirm:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .modal-body {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-confirm {
+            flex: 1;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-confirm:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
 
         /* Password Toggle Styles */
-        .password-wrapper { position: relative; }
-        .eye-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; padding: 4px; transition: 0.2s; }
-        .eye-toggle:hover { color: var(--text); }
-        .password-wrapper input { padding-right: 40px; }
+        .password-wrapper {
+            position: relative;
+        }
+
+        .eye-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            transition: 0.2s;
+        }
+
+        .eye-toggle:hover {
+            color: var(--text);
+        }
+
+        .password-wrapper input {
+            padding-right: 40px;
+        }
 
         /* Maintenance Section (Collapsible) */
-        .collapsible-header { 
-            cursor: pointer; 
+        .collapsible-header {
+            cursor: pointer;
             user-select: none;
             display: flex;
             align-items: center;
         }
-        .collapsible-header:hover .section-title { color: var(--accent); }
-        .collapsible-content { 
-            display: none; 
+
+        .collapsible-header:hover .section-title {
+            color: var(--accent);
+        }
+
+        .collapsible-content {
+            display: none;
             padding-top: 8px;
             animation: fadeIn 0.3s ease-out;
         }
-        .section-title i { 
+
+        .section-title i {
             font-style: normal;
             font-size: 10px;
             margin-left: 8px;
             transition: transform 0.3s ease;
             opacity: 0.5;
         }
-        .maintenance-section.open .collapsible-content { display: block; }
-        .maintenance-section.open .section-title i { transform: rotate(180deg); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .maintenance-section.open .collapsible-content {
+            display: block;
+        }
+
+        .maintenance-section.open .section-title i {
+            transform: rotate(180deg);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         /* Help Icon Styles */
         .help-icon {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 16px; height: 16px; border-radius: 50%;
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            font-size: 10px; color: var(--text-muted); cursor: pointer;
-            margin-left: 6px; transition: 0.2s; vertical-align: middle;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-left: 6px;
+            transition: 0.2s;
+            vertical-align: middle;
         }
-        .help-icon:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .help-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -212,7 +475,8 @@
 
         <form id="configForm">
             <section>
-                <div class="section-title">Mount Access Point (Local Network) <span class="help-icon" onclick="showHelp('ap')">?</span></div>
+                <div class="section-title">Mount Access Point (Local Network) <span class="help-icon"
+                        onclick="showHelp('ap')">?</span></div>
                 <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;">
                     This primary network is broadcasted by the bridge to ensure you always have access.
                 </p>
@@ -225,7 +489,11 @@
                     <div class="password-wrapper">
                         <input type="password" name="ap_psk" id="ap_psk">
                         <div class="eye-toggle" onclick="togglePass('ap_psk', this)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -237,17 +505,20 @@
 
             <section>
                 <div class="section-title" style="margin-bottom: 12px; display: flex; align-items: center;">
-                    <input type="checkbox" id="staCheckbox" onchange="toggleStaMode(this.checked)" style="width: auto; margin: 0 10px 0 0; cursor: pointer;">
+                    <input type="checkbox" id="staCheckbox" onchange="toggleStaMode(this.checked)"
+                        style="width: auto; margin: 0 10px 0 0; cursor: pointer;">
                     <span style="font-size: 13px;">Connect to Home Network (Station Mode)</span>
                     <span class="help-icon" onclick="showHelp('sta')" style="margin-left: 8px;">?</span>
                 </div>
-                
+
                 <!-- Hidden input for the backend C++ logic -->
                 <input type="hidden" name="wifi_mode" id="wifi_mode" value="AP">
 
-                <div id="staFields" style="display: none; padding-top: 8px; border-left: 2px solid var(--border); padding-left: 12px; margin-left: 6px;">
+                <div id="staFields"
+                    style="display: none; padding-top: 8px; border-left: 2px solid var(--border); padding-left: 12px; margin-left: 6px;">
                     <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;">
-                        The bridge will attempt to connect here first. If unreachable or disabled, it relies solely on the Mount Access Point above.
+                        The bridge will attempt to connect here first. If unreachable or disabled, it relies solely on
+                        the Mount Access Point above.
                     </p>
                     <div class="form-group">
                         <label>Home Network SSID</label>
@@ -264,7 +535,11 @@
                         <div class="password-wrapper">
                             <input type="password" name="psk" id="psk">
                             <div class="eye-toggle" onclick="togglePass('psk', this)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -277,16 +552,20 @@
                     </div>
                     <div id="staticFields" style="display: none; padding-top: 8px;">
                         <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <div class="form-group"><label>IP</label><input type="text" name="static_ip" id="static_ip" value="192.168.1.100"></div>
-                            <div class="form-group"><label>Mask</label><input type="text" name="static_sn" id="static_sn" value="255.255.255.0"></div>
+                            <div class="form-group"><label>IP</label><input type="text" name="static_ip" id="static_ip"
+                                    value="192.168.1.100"></div>
+                            <div class="form-group"><label>Mask</label><input type="text" name="static_sn"
+                                    id="static_sn" value="255.255.255.0"></div>
                         </div>
-                        <div class="form-group"><label>Gateway</label><input type="text" name="static_gw" id="static_gw" value="192.168.1.1"></div>
+                        <div class="form-group"><label>Gateway</label><input type="text" name="static_gw" id="static_gw"
+                                value="192.168.1.1"></div>
                     </div>
                 </div>
             </section>
 
             <section>
-                <div class="section-title">Bluetooth Bridge <span class="help-icon" onclick="showHelp('bt')">?</span></div>
+                <div class="section-title">Bluetooth Bridge <span class="help-icon" onclick="showHelp('bt')">?</span>
+                </div>
                 <div class="form-group">
                     <label>Bluetooth Discovery Name</label>
                     <input type="text" name="bt_name" id="bt_name">
@@ -297,7 +576,8 @@
                 <div class="section-title">Advanced Settings</div>
                 <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
-                        <label>Packet Timeout (ms) <span class="help-icon" onclick="showHelp('timeout')">?</span></label>
+                        <label>Packet Timeout (ms) <span class="help-icon"
+                                onclick="showHelp('timeout')">?</span></label>
                         <input type="number" name="packet_timeout" id="packet_timeout" min="1" max="1000">
                     </div>
                     <div class="form-group">
@@ -340,20 +620,29 @@
                     <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div class="form-group">
                             <label>Backup</label>
-                            <button type="button" class="btn-cancel" style="width: 100%; border-color: var(--primary); color: var(--primary);" onclick="downloadConfig()">Download JSON</button>
+                            <button type="button" class="btn-cancel"
+                                style="width: 100%; border-color: var(--primary); color: var(--primary);"
+                                onclick="downloadConfig()">Download JSON</button>
                         </div>
                         <div class="form-group">
                             <label>Restore</label>
-                            <input type="file" id="restoreFile" style="display:none" onchange="restoreConfig(this)" accept=".json">
-                            <button type="button" class="btn-cancel" style="width: 100%; border-color: var(--primary); color: var(--primary);" onclick="document.getElementById('restoreFile').click()">Upload File</button>
+                            <input type="file" id="restoreFile" style="display:none" onchange="restoreConfig(this)"
+                                accept=".json">
+                            <button type="button" class="btn-cancel"
+                                style="width: 100%; border-color: var(--primary); color: var(--primary);"
+                                onclick="document.getElementById('restoreFile').click()">Upload File</button>
                         </div>
                         <div class="form-group">
                             <label>System</label>
-                            <button type="button" class="btn-cancel" style="width: 100%; border-color: var(--text-muted); color: var(--text-muted);" onclick="rebootDevice()">Reboot Device</button>
+                            <button type="button" class="btn-cancel"
+                                style="width: 100%; border-color: var(--text-muted); color: var(--text-muted);"
+                                onclick="rebootDevice()">Reboot Device</button>
                         </div>
                         <div class="form-group">
                             <label>Danger Zone</label>
-                            <button type="button" class="btn-cancel" style="width: 100%; border-color: #ef4444; color: #ef4444;" onclick="showResetModal()">Factory Reset</button>
+                            <button type="button" class="btn-cancel"
+                                style="width: 100%; border-color: #ef4444; color: #ef4444;"
+                                onclick="showResetModal()">Factory Reset</button>
                         </div>
                     </div>
                 </div>
@@ -370,13 +659,17 @@
         <div class="modal-card">
             <div class="modal-title" style="color: #ef4444;">Factory Reset</div>
             <div class="modal-body">
-                This will <strong>permanently delete</strong> all your wireless settings, static IP info and custom names.
+                This will <strong>permanently delete</strong> all your wireless settings, static IP info and custom
+                names.
                 <br><br>
-                The device will return to its default <strong>AP Mode (EQDirect_Bridge)</strong> and restart immediately.
+                The device will return to its default <strong>AP Mode (EQDirect_Bridge)</strong> and restart
+                immediately.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="document.getElementById('resetModal').style.display='none'">Cancel</button>
-                <button type="button" class="btn-confirm" style="background: #ef4444;" onclick="confirmReset()">Reset Everything</button>
+                <button type="button" class="btn-cancel"
+                    onclick="document.getElementById('resetModal').style.display='none'">Cancel</button>
+                <button type="button" class="btn-confirm" style="background: #ef4444;" onclick="confirmReset()">Reset
+                    Everything</button>
             </div>
         </div>
     </div>
@@ -387,7 +680,8 @@
             <div class="modal-title" id="helpTitle">Setting Title</div>
             <div class="modal-body" id="helpText" style="line-height: 1.6;"></div>
             <div class="modal-footer" style="justify-content: flex-end;">
-                <button type="button" class="btn-confirm" style="flex: 0 1 120px;" onclick="document.getElementById('helpModal').style.display='none'">Got it</button>
+                <button type="button" class="btn-confirm" style="flex: 0 1 120px;"
+                    onclick="document.getElementById('helpModal').style.display='none'">Got it</button>
             </div>
         </div>
     </div>
@@ -401,7 +695,7 @@
             const el = document.getElementById(id);
             const isPass = el.type === "password";
             el.type = isPass ? "text" : "password";
-            
+
             // Toggle SVG icon (Eye vs Eye-off)
             if (isPass) {
                 btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
@@ -451,14 +745,14 @@
             try {
                 const r = await fetch('/status');
                 const d = await r.json();
-                
+
                 document.getElementById('status-val').innerText = d.status;
 
                 // Show STA IP if connected, otherwise show AP IP
                 const activeIP = (d.ip === "0.0.0.0" || d.ip === "") ? d.ap_ip : d.ip;
                 document.getElementById('ip-val').innerText = activeIP;
                 document.getElementById('version-val').innerText = d.version || '---';
-            } catch(e) {}
+            } catch (e) { }
         }
         setInterval(updateStatus, 2000);
         updateStatus();
@@ -477,10 +771,10 @@
                     el.value = String(data[key]);
                 }
             });
-            
+
             // Explicitly sync all toggles after values are set
             toggleStatic(String(data.use_static));
-            
+
             const staEnabled = (data.wifi_mode === "STA");
             document.getElementById('staCheckbox').checked = staEnabled;
             toggleStaMode(staEnabled);
@@ -493,7 +787,7 @@
             const res = document.getElementById('scanResult');
             res.style.display = 'block';
             list.innerHTML = '<div style="padding: 10px;">Scanning heavens...</div>';
-            
+
             const r = await fetch('/scan');
             const data = await r.json();
             list.innerHTML = '';
@@ -511,7 +805,7 @@
             e.preventDefault();
             const loader = document.getElementById('loader');
             loader.style.display = 'inline-block';
-            
+
             // Convert FormData to URLSearchParams for application/x-www-form-urlencoded
             const formData = new FormData(e.target);
             const params = new URLSearchParams();
@@ -519,10 +813,10 @@
                 params.append(pair[0], pair[1]);
             }
 
-            const r = await fetch('/save', { 
-                method: 'POST', 
+            const r = await fetch('/save', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params 
+                body: params
             });
             if (r.ok) {
                 document.getElementById('toast').classList.add('show');
@@ -547,7 +841,7 @@
             document.getElementById('resetModal').style.display = 'none';
             const loader = document.getElementById('loader');
             loader.style.display = 'inline-block';
-            
+
             try {
                 const r = await fetch('/reset', { method: 'POST' });
                 if (r.ok) {
@@ -555,7 +849,7 @@
                     document.getElementById('toast').classList.add('show');
                     setTimeout(() => location.reload(), 5000);
                 }
-            } catch(e) {
+            } catch (e) {
                 alert("Reset failed: " + e);
                 loader.style.display = 'none';
             }
@@ -566,7 +860,7 @@
         };
 
         window.rebootDevice = async () => {
-            if(!confirm("Reboot the bridge?")) return;
+            if (!confirm("Reboot the bridge?")) return;
             const toast = document.getElementById('toast');
             toast.innerText = "Rebooting...";
             toast.classList.add('show');
@@ -577,13 +871,13 @@
         window.restoreConfig = (input) => {
             const file = input.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const toast = document.getElementById('toast');
                 toast.innerText = "Restoring & Rebooting...";
                 toast.classList.add('show');
-                
+
                 try {
                     const r = await fetch('/restore', {
                         method: 'POST',
@@ -595,7 +889,7 @@
                         alert("Restore failed!");
                         toast.classList.remove('show');
                     }
-                } catch(err) {
+                } catch (err) {
                     alert("Error: " + err);
                     toast.classList.remove('show');
                 }
@@ -604,4 +898,5 @@
         };
     </script>
 </body>
+
 </html>
